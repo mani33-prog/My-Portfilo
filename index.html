@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manikanta Kumar — Senior Data Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #03060f;
+      --bg-1:      #080f1f;
+      --bg-2:      #0d1629;
+      --border:    #1a2840;
+      --border-hi: #1e3a5f;
+      --text:      #e2e8f0;
+      --text-2:    #94a3b8;
+      --text-3:    #64748b;
+      --cyan:      #22d3ee;
+      --cyan-dim:  rgba(34,211,238,.12);
+      --blue:      #3b82f6;
+      --glow:      0 0 28px rgba(34,211,238,.22);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── UTILITIES ── */
+    .mono  { font-family: 'JetBrains Mono', monospace; }
+    .grad  { background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%);
+             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+      color: var(--cyan); letter-spacing: .12em; text-transform: uppercase;
+      padding: 4px 12px; border: 1px solid rgba(34,211,238,.25);
+      border-radius: 100px; background: var(--cyan-dim); margin-bottom: 20px;
+    }
+    .section-label::before { content: '//'; opacity: .5; }
+    .divider { height: 1px; background: linear-gradient(90deg, var(--border) 0%, transparent 100%); margin: 0 0 48px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; display: flex; align-items: center;
+      background: rgba(3,6,15,.82); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo {
+      font-weight: 800; font-size: 18px; letter-spacing: -.02em;
+      color: #fff; display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 13px; font-weight: 500;
+      color: var(--text-2); transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta {
+      padding: 8px 18px; border: 1px solid rgba(34,211,238,.4);
+      border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--cyan);
+      background: var(--cyan-dim); text-decoration: none; transition: all .2s;
+    }
+    .nav-cta:hover { background: rgba(34,211,238,.2); box-shadow: var(--glow); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 120px 0 80px; position: relative; overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px; opacity: .35;
+    }
+    .hero-glow {
+      position: absolute; top: 20%; left: 0; width: 60%; height: 60%;
+      background: radial-gradient(ellipse, rgba(34,211,238,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--cyan); padding: 6px 14px;
+      border: 1px solid rgba(34,211,238,.25); border-radius: 100px;
+      background: var(--cyan-dim); margin-bottom: 28px;
+    }
+    .hero-badge .blink { width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan); animation: pulse 1.2s ease-in-out infinite; }
+    h1.hero-name {
+      font-size: clamp(42px, 7vw, 80px); font-weight: 900;
+      letter-spacing: -.04em; line-height: 1.0; color: #fff; margin-bottom: 10px;
+    }
+    h2.hero-title {
+      font-size: clamp(20px, 3.5vw, 36px); font-weight: 300;
+      color: var(--text-2); margin-bottom: 28px; letter-spacing: -.01em;
+    }
+    .hero-title strong { color: var(--text); font-weight: 600; }
+    .hero-desc {
+      font-size: 17px; color: var(--text-2); max-width: 600px;
+      margin-bottom: 40px; line-height: 1.75; font-weight: 400;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 44px; }
+    .btn-primary {
+      padding: 14px 28px; background: var(--cyan); color: #03060f;
+      font-weight: 700; font-size: 14px; border-radius: 8px;
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 0 24px rgba(34,211,238,.35); transition: all .2s;
+    }
+    .btn-primary:hover { background: #67e8f9; box-shadow: 0 0 36px rgba(34,211,238,.55); }
+    .btn-ghost {
+      padding: 14px 28px; border: 1px solid var(--border-hi);
+      color: var(--text-2); font-weight: 500; font-size: 14px;
+      border-radius: 8px; text-decoration: none; transition: all .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(34,211,238,.4); color: var(--cyan); }
+    .cert-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .cert-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--bg-1);
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-2);
+    }
+    .cert-chip .icon { color: var(--cyan); font-size: 14px; }
+    .hero-meta { margin-top: 20px; display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-meta span {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3);
+    }
+
+    /* ── ABOUT ── */
+    #about { padding: 100px 0; border-top: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .about-text h2 { font-size: 38px; font-weight: 800; letter-spacing: -.03em; color: #fff; margin-bottom: 24px; }
+    .about-text p { font-size: 16px; color: var(--text-2); line-height: 1.8; margin-bottom: 18px; }
+    .about-text p strong { color: var(--text); }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-card {
+      padding: 24px; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--bg-1);
+    }
+    .stat-card .num { font-size: 32px; font-weight: 800; color: var(--cyan); letter-spacing: -.03em; }
+    .stat-card .lbl { font-size: 12px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; margin-top: 4px; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ── METRICS ── */
+    #metrics {
+      padding: 80px 0; background: var(--bg-1);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .metrics-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px; opacity: .2;
+    }
+    .metrics-header { text-align: center; margin-bottom: 56px; position: relative; }
+    .metrics-header h2 { font-size: 36px; font-weight: 800; color: #fff; margin-top: 16px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
+    .metric-card {
+      padding: 28px 24px; border-radius: 12px;
+      border: 1px solid var(--border); background: rgba(3,6,15,.8);
+      transition: border-color .25s, transform .25s;
+      position: relative; overflow: hidden;
+    }
+    .metric-card::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 80px; height: 80px;
+      background: radial-gradient(circle, rgba(34,211,238,.08) 0%, transparent 70%);
+    }
+    .metric-card:hover { border-color: rgba(34,211,238,.4); transform: translateY(-2px); }
+    .metric-value { font-size: 36px; font-weight: 900; letter-spacing: -.04em; color: #fff; margin-bottom: 6px; }
+    .metric-label { font-size: 12px; font-weight: 600; color: var(--cyan); text-transform: uppercase;
+      letter-spacing: .08em; font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; }
+    .metric-desc { font-size: 12px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; line-height: 1.5; }
+
+    /* ── STACK ── */
+    #stack { padding: 100px 0; border-top: 1px solid var(--border); }
+    .stack-header { margin-bottom: 56px; }
+    .stack-header h2 { font-size: 36px; font-weight: 800; color: #fff; margin-top: 16px; }
+    .stack-header p { font-size: 16px; color: var(--text-2); max-width: 580px; margin-top: 12px; }
+    .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .stack-card {
+      padding: 28px; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--bg-1);
+      transition: border-color .25s;
+    }
+    .stack-card:hover { border-color: var(--border-hi); }
+    .stack-card-icon { font-size: 28px; margin-bottom: 16px; }
+    .stack-card h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;
+      text-transform: uppercase; letter-spacing: .06em; font-family: 'JetBrains Mono', monospace; }
+    .stack-tags { display: flex; flex-direction: column; gap: 8px; }
+    .stack-tag {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-2);
+    }
+    .stack-tag::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
+
+    /* ── PROJECTS ── */
+    #projects { padding: 100px 0; background: var(--bg-1); border-top: 1px solid var(--border); }
+    .projects-header { margin-bottom: 56px; }
+    .projects-header h2 { font-size: 36px; font-weight: 800; color: #fff; margin-top: 16px; }
+    .projects-header p { font-size: 16px; color: var(--text-2); max-width: 580px; margin-top: 12px; }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .project-card {
+      padding: 32px; border-radius: 14px;
+      border: 1px solid var(--border); background: rgba(3,6,15,.7);
+      display: flex; flex-direction: column; gap: 16px;
+      transition: border-color .25s, transform .25s;
+    }
+    .project-card:hover { border-color: rgba(34,211,238,.3); transform: translateY(-3px); }
+    .project-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .project-metric {
+      padding: 4px 12px; border-radius: 100px;
+      border: 1px solid rgba(34,211,238,.3); background: var(--cyan-dim);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+      color: var(--cyan); white-space: nowrap;
+    }
+    .project-card h3 { font-size: 20px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .project-card p { font-size: 14px; color: var(--text-2); line-height: 1.75; flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .project-tag {
+      padding: 4px 10px; border-radius: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3);
+    }
+    .proj-icon { font-size: 22px; color: var(--cyan); flex-shrink: 0; }
+
+    /* ── EXPERIENCE ── */
+    #experience { padding: 100px 0; border-top: 1px solid var(--border); }
+    .exp-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+    .exp-section-title {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 40px;
+    }
+    .exp-section-icon { font-size: 22px; color: var(--cyan); }
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 0;
+      width: 1px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: -32px; top: 6px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 12px rgba(34,211,238,.5); }
+    .timeline-item .role { font-size: 17px; font-weight: 700; color: #fff; }
+    .timeline-item .company {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--cyan); margin: 4px 0 14px;
+    }
+    .timeline-item ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .timeline-item ul li {
+      font-size: 13px; color: var(--text-2); padding-left: 16px;
+      position: relative; line-height: 1.65;
+    }
+    .timeline-item ul li::before { content: '›'; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
+    .edu-item { margin-bottom: 28px; }
+    .edu-item .deg { font-size: 16px; font-weight: 600; color: var(--text); }
+    .edu-item .year { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3); margin-top: 4px; }
+    .edu-item::before { top: 8px; }
+    .certs-section { margin-top: 40px; }
+    .certs-section h4 { font-size: 14px; font-weight: 700; color: var(--text);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
+    .cert-badge {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg-1);
+      margin-bottom: 12px;
+    }
+    .cert-badge .cert-icon { width: 36px; height: 36px; border-radius: 8px;
+      background: var(--cyan-dim); border: 1px solid rgba(34,211,238,.3);
+      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .cert-badge .cert-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .cert-badge .cert-issuer { font-size: 11px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+    /* ── CONTACT FOOTER ── */
+    footer {
+      padding: 100px 24px 60px; text-align: center;
+      border-top: 1px solid var(--border); background: var(--bg-1);
+      position: relative; overflow: hidden;
+    }
+    footer::before {
+      content: ''; position: absolute; bottom: -50%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(34,211,238,.05) 0%, transparent 60%);
+    }
+    footer h2 { font-size: clamp(32px, 6vw, 60px); font-weight: 900;
+      letter-spacing: -.04em; color: #fff; margin: 16px 0 16px; }
+    footer p { font-size: 17px; color: var(--text-2); max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+    .contact-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 48px; }
+    .footer-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3);
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .footer-meta span::before { content: '// '; opacity: .5; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .about-grid, .exp-layout { grid-template-columns: 1fr; gap: 40px; }
+      .stack-grid { grid-template-columns: 1fr 1fr; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .stack-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="#hero">
+      <span class="dot"></span>
+      Manikanta Kumar
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#metrics">Impact</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:mmkcloudtech@gmail.com">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="hero-badge">
+      <span class="blink"></span>
+      Available for new opportunities
+    </div>
+    <h1 class="hero-name">Manikanta Kumar</h1>
+    <h2 class="hero-title">
+      Senior Data Engineer &mdash; <strong>Azure · PySpark · Databricks</strong>
+    </h2>
+    <p class="hero-desc">
+      I architect and operationalize enterprise-grade data pipelines that process hundreds of gigabytes a day, enforce data quality at the source, and deliver analytics that business teams can trust. 4+ years building production infrastructure on the Azure ecosystem — from raw ingestion to Power BI-ready gold layers.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#projects">View Architecture Work</a>
+      <a class="btn-ghost" href="mailto:mmkcloudtech@gmail.com">mmkcloudtech@gmail.com</a>
+    </div>
+    <div class="cert-chips">
+      <div class="cert-chip">
+        <span class="icon">✦</span>
+        Microsoft Certified: Azure Administrator (AZ-104)
+      </div>
+      <div class="cert-chip">
+        <span class="icon">✦</span>
+        Databricks Certified Data Engineer Associate
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span>Hyderabad, India</span>
+      <span>+91-8143251199</span>
+      <span>4+ Years Experience</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">Profile</div>
+        <h2>The engineer behind<br>the pipeline.</h2>
+        <p>
+          I specialise in <strong>designing and operationalising high-throughput data pipelines</strong> on Azure — from raw event streams to curated, SLA-governed analytical datasets. My work sits at the intersection of software engineering rigour and data architecture thinking.
+        </p>
+        <p>
+          At Nanomindz Technologies, I've transformed fragile, ad hoc ETL processes into <strong>modular, idempotent, cloud-native pipelines</strong> using Azure Data Factory and Azure Databricks. I enforce schema contracts and partition strategies at ingestion time so data quality failures never reach downstream consumers.
+        </p>
+        <p>
+          I take data governance seriously — field-level quality checks, column-level encryption, Azure RBAC role policies, lineage documentation — because <strong>trusted data is the only data worth having</strong>.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="num">4+</div>
+          <div class="lbl">Years Azure Data Engineering</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">250 GB</div>
+          <div class="lbl">Daily Event Volume Handled</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">20+</div>
+          <div class="lbl">Production ADF Pipelines</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">2</div>
+          <div class="lbl">Microsoft & Databricks Certifications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section id="metrics">
+  <div class="metrics-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="metrics-header">
+      <div class="section-label">Measurable Impact</div>
+      <h2>Results that show up in production.</h2>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value">250 GB+</div>
+        <div class="metric-label">Daily Event Volume</div>
+        <div class="metric-desc">Sustained throughput via Azure Event Hubs with backpressure-aware consumers</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">−60%</div>
+        <div class="metric-label">Pipeline Run Time</div>
+        <div class="metric-desc">Legacy SSIS packages migrated to cloud-native ADF + Databricks</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">30 sec</div>
+        <div class="metric-label">Query Response</div>
+        <div class="metric-desc">Synapse Analytics dashboards — down from 3 minutes with columnar indexing</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">−30%</div>
+        <div class="metric-label">Compute Cost</div>
+        <div class="metric-desc">Databricks auto-scaling + spot instances without impacting SLAs</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">500 K</div>
+        <div class="metric-label">Records / Day</div>
+        <div class="metric-desc">Medallion architecture — data freshness improved from T+1 to 2-hour cycles</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">3 hrs</div>
+        <div class="metric-label">Source Onboarding</div>
+        <div class="metric-desc">Metadata-driven ingestion framework reduced onboarding from 2 days</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">8 K/min</div>
+        <div class="metric-label">Event Stream Rate</div>
+        <div class="metric-desc">Real-time clickstream pipeline feeding live Power BI marketing dashboards</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">1.2 M</div>
+        <div class="metric-label">Rows Weekly</div>
+        <div class="metric-desc">Finance reporting dataset moved from fragmented Excel to structured SQL</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="container">
+    <div class="stack-header">
+      <div class="section-label">Technology Stack</div>
+      <h2>Tools I ship production systems with.</h2>
+      <p>Deep hands-on expertise across the full Azure data ecosystem, from ingestion to serving.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-card-icon">☁️</div>
+        <h3>Cloud & Pipelines</h3>
+        <div class="stack-tags">
+          <div class="stack-tag">Azure Data Factory</div>
+          <div class="stack-tag">Azure Databricks</div>
+          <div class="stack-tag">Azure Synapse Analytics</div>
+          <div class="stack-tag">ADLS Gen2</div>
+          <div class="stack-tag">Azure Functions</div>
+          <div class="stack-tag">Azure Logic Apps</div>
+          <div class="stack-tag">Azure Purview</div>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon">⚡</div>
+        <h3>Processing & Storage</h3>
+        <div class="stack-tags">
+          <div class="stack-tag">PySpark / Spark SQL</div>
+          <div class="stack-tag">Delta Lake (ACID)</div>
+          <div class="stack-tag">Medallion Architecture</div>
+          <div class="stack-tag">Snowflake (Star Schema, SCD2)</div>
+          <div class="stack-tag">PostgreSQL / Azure SQL DB</div>
+          <div class="stack-tag">dbt</div>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon">📡</div>
+        <h3>Streaming & Messaging</h3>
+        <div class="stack-tags">
+          <div class="stack-tag">Azure Event Hubs</div>
+          <div class="stack-tag">Apache Kafka</div>
+          <div class="stack-tag">Kafka Streams</div>
+          <div class="stack-tag">Schema Registry</div>
+          <div class="stack-tag">Stream Analytics</div>
+          <div class="stack-tag">Spark Structured Streaming</div>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon">🔐</div>
+        <h3>DevOps & Governance</h3>
+        <div class="stack-tags">
+          <div class="stack-tag">Azure DevOps / GitHub Actions</div>
+          <div class="stack-tag">Terraform</div>
+          <div class="stack-tag">Docker</div>
+          <div class="stack-tag">Apache Airflow</div>
+          <div class="stack-tag">Azure RBAC & Key Vault</div>
+          <div class="stack-tag">Column-Level Encryption</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="projects-header">
+      <div class="section-label">Architectural Work</div>
+      <h2>Production systems, not demos.</h2>
+      <p>A selection of data infrastructure implementations built for scale, compliance, and long-term maintainability.</p>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">⬡</span>
+          <span class="project-metric">500K records / day</span>
+        </div>
+        <h3>Enterprise Medallion Architecture (Bronze / Silver / Gold)</h3>
+        <p>Designed and implemented a full layered data architecture on ADLS Gen2 using Azure Databricks and PySpark. Incremental Delta Lake loads with ACID compliance, schema enforcement, and time-travel. Improved data freshness from T+1 to 2-hour refresh cycles and established a single trusted source for all downstream analytics.</p>
+        <div class="project-tags">
+          <span class="project-tag">Databricks</span>
+          <span class="project-tag">PySpark</span>
+          <span class="project-tag">Delta Lake</span>
+          <span class="project-tag">ADLS Gen2</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">📡</span>
+          <span class="project-metric">8,000 events / min</span>
+        </div>
+        <h3>Near-Real-Time Streaming Pipeline</h3>
+        <p>Built a high-throughput event streaming architecture capturing clickstream and cart-abandonment events at ~8,000/minute via Azure Event Hubs and Stream Analytics. Feeds live Power BI dashboards used by the marketing team for same-day campaign decisions — reducing data latency from hours to under 60 seconds.</p>
+        <div class="project-tags">
+          <span class="project-tag">Azure Event Hubs</span>
+          <span class="project-tag">Stream Analytics</span>
+          <span class="project-tag">Power BI</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">⚙</span>
+          <span class="project-metric">2 days → 3 hours</span>
+        </div>
+        <h3>Metadata-Driven Ingestion Framework</h3>
+        <p>Engineered a parameterised ingestion framework in Azure Data Factory where source/target configurations, watermark columns, and schema mappings are stored in Azure SQL DB — eliminating the need for pipeline code changes when onboarding new sources. Cut onboarding time from 2 days to 3 hours across retail, loyalty, and returns data.</p>
+        <div class="project-tags">
+          <span class="project-tag">ADF</span>
+          <span class="project-tag">Azure SQL DB</span>
+          <span class="project-tag">Dynamic Pipelines</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">🔄</span>
+          <span class="project-metric">60% faster execution</span>
+        </div>
+        <h3>Legacy ETL to Cloud-Native Migration</h3>
+        <p>Led end-to-end migration of 3 monolithic on-premises SSIS packages to cloud-native ADF pipelines and Databricks notebooks for retail transaction data across 5 business units. Reduced pipeline execution time by 60%, cut compute overhead significantly, and established Git-based CI/CD via Azure DevOps for continuous delivery.</p>
+        <div class="project-tags">
+          <span class="project-tag">SSIS → ADF</span>
+          <span class="project-tag">Databricks</span>
+          <span class="project-tag">Azure DevOps CI/CD</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">🧠</span>
+          <span class="project-metric">300K customers</span>
+        </div>
+        <h3>Customer Churn Prediction Pipeline</h3>
+        <p>Built the feature engineering pipeline for a churn model in production. Processed purchase history and browsing data for ~300K customers on Databricks, writing scored outputs to Azure Synapse Analytics. Results feed directly into targeted retention campaigns visible in Power BI, closing the loop between data engineering and ML outcomes.</p>
+        <div class="project-tags">
+          <span class="project-tag">Databricks</span>
+          <span class="project-tag">Azure ML</span>
+          <span class="project-tag">Synapse</span>
+          <span class="project-tag">Power BI</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="proj-icon">🔗</span>
+          <span class="project-metric">20+ active pipelines</span>
+        </div>
+        <h3>Multi-Source API Ingestion Platform</h3>
+        <p>Deployed 20+ specialised ADF pipelines ingesting from REST APIs (Shopify, Salesforce CRM), on-premises SQL Server, and flat file sources into ADLS Gen2 — eliminating manual data loads across 5 retail business units. Enforced PII compliance with Azure Purview lineage cataloguing and Synapse row-level security per business unit.</p>
+        <div class="project-tags">
+          <span class="project-tag">ADF</span>
+          <span class="project-tag">Shopify API</span>
+          <span class="project-tag">Salesforce</span>
+          <span class="project-tag">Azure Purview</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="exp-layout">
+
+      <div>
+        <div class="section-label">Experience</div>
+        <div class="exp-section-title" style="margin-top:20px;">
+          <span class="exp-section-icon">💼</span> Work History
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="role">Azure Data Engineer</div>
+            <div class="company">NANOMINDZ TECHNOLOGIES PVT LTD &bull; Jan 2021 – Present &bull; Visakhapatnam, India</div>
+            <ul>
+              <li>Automated daily &amp; hourly ingestion pipelines using ADF with idempotent upserts to maintain warehouse consistency across duplicate and late-arriving source records.</li>
+              <li>Refactored a monolithic ETL script into modular ADF workflows and Azure Logic Apps, enabling parallel backfill execution and simplified change management.</li>
+              <li>Configured Azure Event Hubs with backpressure-aware consumers to sustain 250 GB/day event ingestion into Synapse without downstream degradation.</li>
+              <li>Implemented Medallion Architecture (Bronze/Silver/Gold) with Delta Lake on Databricks; tuned Spark partitioning, broadcast joins, and caching for batch workloads.</li>
+              <li>Designed Snowflake schemas with Star Schema and SCD Type 2; configured Snowflake RBAC, Dynamic Data Masking, and column-level security.</li>
+              <li>Formalised ad hoc CSV drops into schema-validated ingestion paths using Azure Functions and Azure Purview to prevent silent data drift.</li>
+              <li>Defined field-level data quality checks, reconciliation queries, and a shared data dictionary to support audit-ready reporting and stable downstream assumptions.</li>
+              <li>Tightened post-security-review access controls via Azure RBAC policies and column-level encryption for sensitive fields in Azure Synapse Analytics.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">Education &amp; Certifications</div>
+        <div class="exp-section-title" style="margin-top:20px;">
+          <span class="exp-section-icon">🎓</span> Education
+        </div>
+        <div class="timeline">
+          <div class="timeline-item edu-item">
+            <div class="role">MS Information Systems Security</div>
+            <div class="company">2020</div>
+          </div>
+          <div class="timeline-item edu-item">
+            <div class="role">MS Computer Science</div>
+            <div class="company">2016</div>
+          </div>
+          <div class="timeline-item edu-item">
+            <div class="role">BE Electronics &amp; Communication Engineering</div>
+            <div class="company">2014</div>
+          </div>
+        </div>
+
+        <div class="certs-section">
+          <h4>Certifications</h4>
+          <div class="cert-badge">
+            <div class="cert-icon">☁</div>
+            <div>
+              <div class="cert-name">Microsoft Certified: Azure Administrator Associate</div>
+              <div class="cert-issuer">Microsoft &bull; AZ-104</div>
+            </div>
+          </div>
+          <div class="cert-badge">
+            <div class="cert-icon">⚡</div>
+            <div>
+              <div class="cert-name">Databricks Certified Data Engineer Associate</div>
+              <div class="cert-issuer">Databricks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer>
+  <div class="section-label">Contact</div>
+  <h2>Let's build something<br><span class="grad">reliable together.</span></h2>
+  <p>Open to senior data engineering roles, contract work, and consulting. If you need pipelines that actually hold up in production, let's talk.</p>
+  <div class="contact-btns">
+    <a class="btn-primary" href="mailto:mmkcloudtech@gmail.com">mmkcloudtech@gmail.com</a>
+    <a class="btn-ghost" href="tel:+918143251199">+91-8143251199</a>
+  </div>
+  <div class="footer-meta">
+    <span>Hyderabad, India</span>
+    <span>Available for remote &amp; hybrid roles</span>
+    <span>4+ Years Azure Data Engineering</span>
+  </div>
+</footer>
+
+</body>
+</html>
